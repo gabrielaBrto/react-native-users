@@ -39,9 +39,7 @@ export default class Login extends Component {
       },
     }).then( (response) => {
       if(response.data.nome){
-        console.log(response.data.api_token)
          AsyncStorage.setItem('id',JSON.stringify(response.data.id));
-        
          const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: 'Main' })],

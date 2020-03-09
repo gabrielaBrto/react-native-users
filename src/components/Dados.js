@@ -5,29 +5,43 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
 import { Icon } from 'react-native-elements'
 
-const list = [
-  {
-    title: 'Appointments',
-    icon: 'book',
-    type: 'font-awesome'
-  },
-  {
-    title: 'Trips',
-    icon: 'book',
-    type: 'font-awesome'
-  },
-]
 
 class Dados extends Component {
-   render() {
+  constructor(props){
+    super(props)
+    this.state = {
+      livros: []
+    }
+    this._getLivros()
+  }
+
+  _getLivros = () =>{
+      axios.get('http://192.168.1.38/Hunt/public/api/livros')
+      .then((res) => {
+          var livros = this.state.livros
+          res.data.map(livro => {
+              livros.push({
+                  title: livro.titulo,
+                  autor: livro.autor,
+                  preco: livro.preco,
+                  icon: 'book'
+              })
+          })
+          this.setState({livros})
+      })
+  }
+  
+  render() {
      return (
        <View style={styles.container}>
           {
-            list.map((item, i) => (
+            this.state.livros.map((item, i) => (
               <ListItem
                 key={i}
                 title={item.title}
                 leftIcon={{ name: item.icon }}
+                bottomDivider
+                chevron
               />
             ))
           }
